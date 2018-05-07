@@ -21,7 +21,7 @@ var addNote = (title,body) =>{
         title,
         body
     };
-
+    //Check for duplicates in list
     var duplicateNotes = notes.filter((note) => note.title === title);
 
     if (duplicateNotes.length === 0){
@@ -32,20 +32,36 @@ var addNote = (title,body) =>{
 };
 
 var getAll = () =>{
-    var notes = fetchNotes();
-    console.log(notes);
+    return fetchNotes();
 };
 
 var getNote = (title) =>{
-    console.log('Getting note', title);
+    var notes = fetchNotes();
+
+    var duplicateNotes = notes.filter((note) => note.title === title);
+    return duplicateNotes[0];
 };
 
 var removeNote = (title) =>{
-    console.log('Removing note', title);
+    var notes = fetchNotes();
+    //Check for duplicates in list
+    var duplicateNotes = notes.filter((note) => note.title !== title);
+
+    saveNotes(duplicateNotes);
+
+    return notes.length !== duplicateNotes.length;
+
 };
+
+var printNote = (note) =>{
+    console.log('---');
+    console.log(`Title: ${note.title}`);
+    console.log(`Body: ${note.body}`);
+}
 module.exports = {
     addNote,
     getAll,
     getNote,
-    removeNote
+    removeNote,
+    printNote
 }
